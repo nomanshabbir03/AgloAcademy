@@ -24,10 +24,28 @@ const __dirname = path.dirname(__filename);
 const FRONTEND_URL = process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'dev';
 
-// Basic middleware
+// Normalize FRONTEND_URL (remove trailing slash)
+const normalizedFrontendUrl = FRONTEND_URL.replace(/\/$/, '');
+
+// CORS configuration - handle with/without trailing slash
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Normalize origin (remove trailing slash)
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    
+    // Check if origin matches (with or without trailing slash)
+    if (normalizedOrigin === normalizedFrontendUrl || origin === FRONTEND_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 app.use(cookieParser());
