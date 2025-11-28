@@ -68,12 +68,18 @@ FROM_EMAIL=noreply@yourdomain.com
 SEND_CONFIRMATION_EMAIL=true
 ```
 
-### 2.4 Deploy
+### 2.4 Deploy and Get Backend URL
 
 1. Railway will automatically deploy
 2. Wait for deployment to complete (2-3 minutes)
-3. Click "Settings" → "Generate Domain" to get your backend URL
-4. Copy the URL: `https://your-backend.up.railway.app`
+3. **To get your backend URL:**
+   - Click on your service
+   - Go to **"Settings"** tab
+   - Scroll to **"Networking"** section
+   - Click **"Generate Domain"** button (if you don't see a domain yet)
+   - Your URL will appear: `https://your-service-name.up.railway.app`
+4. **Copy this URL** - you'll need it for the frontend deployment
+5. **Test it**: Visit `https://your-backend.up.railway.app/api/health` - should return `{"status":"ok"}`
 
 ---
 

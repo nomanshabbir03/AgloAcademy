@@ -43,6 +43,23 @@ app.use('/api/enroll', enrollmentRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/contact', contactRoutes);
 
+// Root route - API info
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Academy Backend API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      courses: '/api/courses',
+      auth: '/api/auth',
+      blog: '/api/blog',
+      enroll: '/api/enroll',
+      contact: '/api/contact'
+    }
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });

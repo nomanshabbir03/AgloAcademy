@@ -15,7 +15,11 @@
    - `JWT_SECRET` = random 32+ char string
    - `FRONTEND_URL` = (update after Vercel deploy)
    - `NODE_ENV` = production
-4. Copy backend URL: `https://xxx.up.railway.app`
+4. **Get backend URL:**
+   - Wait for deployment to finish
+   - Click service → Settings → Networking
+   - Click "Generate Domain"
+   - Copy URL: `https://xxx.up.railway.app`
 
 ### 3. Vercel Frontend (2 min)
 1. Go to https://vercel.com → Add Project → GitHub
