@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f8fafc;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-bright hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-sans;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-primary-accent/10 text-primary-dark font-semibold py-3 px-6 rounded-lg border-2 border-primary-bright transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-sans;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-primary-muted/20;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8;
+  }
+
+  .heading-primary {
+    @apply font-heading font-bold text-primary-dark uppercase tracking-wide;
+  }
+
+  .text-primary {
+    @apply text-primary-dark;
+  }
+
+  .text-secondary {
+    @apply text-primary-secondary;
+  }
+
+  .text-accent {
+    @apply text-primary-accent;
+  }
+
+  .bg-primary-section {
+    @apply bg-primary-secondary/5;
+  }
+
+  .bg-primary-dark-section {
+    @apply bg-primary-dark;
+  }
+}
