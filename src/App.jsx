@@ -22,6 +22,7 @@ const Profile = lazy(() => import('./pages/Profile'));
 const CourseDetails = lazy(() => import('./pages/CourseDetails'));
 const PaymentInstructions = lazy(() => import('./pages/PaymentInstructions'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const MyLearning = lazy(() => import('./pages/MyLearning'));
 
 // Create a client
 const queryClient = new QueryClient({
@@ -182,6 +183,14 @@ function AppContent({ onAppReady }) {
                     <Profile />
                   </ProtectedRoute>
                 } 
+              />
+              <Route
+                path="/my-learning"
+                element={
+                  <ProtectedRoute>
+                    <MyLearning />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/admin"

@@ -80,10 +80,10 @@ const Home = () => {
     <div className="min-h-screen">
       <Slider />
 
-      <section className="section-padding bg-white relative">
+      <section className="section-padding bg-white relative overflow-hidden">
         {/* Social Media Icons - Left Side */}
         <motion.div
-          className="hidden lg:flex flex-col items-center space-y-4 absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 z-10"
+          className="hidden lg:flex flex-col items-center justify-center space-y-5 absolute left-0 lg:left-6 xl:left-8 top-0 bottom-0 z-10"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -93,7 +93,7 @@ const Home = () => {
             href="https://www.facebook.com/share/1DbnEoGtjk/?mibextid=wwXIfr" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-primary-600 transition-colors duration-300"
+            className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
             aria-label="Visit our Facebook page"
           >
             <Facebook size={24} />
@@ -102,7 +102,7 @@ const Home = () => {
             href="https://www.instagram.com/myagloacademy?igsh=MWZvZ3I4c3poZXc2Yg==" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-primary-600 transition-colors duration-300"
+            className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
             aria-label="Visit our Instagram page"
           >
             <Instagram size={24} />
@@ -111,7 +111,7 @@ const Home = () => {
             href="#" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-primary-600 transition-colors duration-300"
+            className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
             aria-label="Visit our YouTube channel"
           >
             <Youtube size={24} />
@@ -120,7 +120,7 @@ const Home = () => {
             href="#" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-primary-600 transition-colors duration-300"
+            className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
             aria-label="Visit our LinkedIn page"
           >
             <Linkedin size={24} />
@@ -129,7 +129,7 @@ const Home = () => {
             href="https://www.tiktok.com/@myagloacademy?_r=1&_t=ZS-91mXOOhYRQz" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-primary-600 transition-colors duration-300"
+            className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
             aria-label="Visit our TikTok page"
           >
             <TikTok size={24} />

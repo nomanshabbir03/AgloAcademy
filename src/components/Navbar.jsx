@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, ChevronRight, GraduationCap, User, LogOut, UserCircle } from 'lucide-react';
+import { Menu, X, ChevronDown, ChevronRight, GraduationCap, User, LogOut, UserCircle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
@@ -196,11 +196,19 @@ const Navbar = () => {
                     >
                       <Link
                         to="/profile"
-                        className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+                        className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors duration-200 flex items-center"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <User className="h-4 w-4 mr-2" />
                         Profile
+                      </Link>
+                      <Link
+                        to="/my-learning"
+                        className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors duration-200 flex items-center"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        My Learning
                       </Link>
                       {user.role === 'admin' && (
                         <Link
@@ -396,6 +404,14 @@ const Navbar = () => {
                         onClick={closeMenu}
                       >
                         Your Profile
+                      </Link>
+                      <Link
+                        to="/my-learning"
+                        className="block px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 flex items-center"
+                        onClick={closeMenu}
+                      >
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        My Learning
                       </Link>
                       {user.role === 'admin' && (
                         <Link
