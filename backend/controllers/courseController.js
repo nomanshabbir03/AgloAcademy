@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export const getCourses = async (req, res) => {
   try {
-    const { search, level, price } = req.query;
+    const { search, level, price, featured } = req.query;
 
     const query = {};
 
@@ -26,6 +26,12 @@ export const getCourses = async (req, res) => {
       if (!Number.isNaN(maxPrice)) {
         query.price = { $lte: maxPrice };
       }
+    }
+
+    if (featured === 'true') {
+      query.featured = true;
+    } else if (featured === 'false') {
+      query.featured = false;
     }
 
     const courses = await Course.find(query).sort({ createdAt: -1 });
@@ -104,6 +110,7 @@ export const createCourse = async (req, res) => {
       googleDriveLink,
       level,
       modules,
+      featured,
     } = req.body;
 
     if (!title || !description || !instructor || !thumbnail || !duration || price == null) {
@@ -123,6 +130,7 @@ export const createCourse = async (req, res) => {
       googleDriveLink,
       level,
       modules,
+      featured: featured === true || featured === 'true',
     });
 
     return res.status(201).json(course);

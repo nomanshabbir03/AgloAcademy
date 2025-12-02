@@ -53,6 +53,10 @@ const courseSchema = new mongoose.Schema(
     googleDriveLink: {
       type: String,
     },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
     modules: [
       {
         title: {

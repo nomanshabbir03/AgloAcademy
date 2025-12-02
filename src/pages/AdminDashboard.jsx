@@ -41,6 +41,7 @@ const AdminDashboard = () => {
     type: 'paid',
     googleDriveLink: '',
     level: '',
+    featured: false,
   });
   const [blogs, setBlogs] = useState([]);
   const [blogModalOpen, setBlogModalOpen] = useState(false);
@@ -119,6 +120,7 @@ const AdminDashboard = () => {
       googleDriveLink: '',
       level: '',
       modules: [],
+      featured: false,
     });
     setCourseThumbnailFile(null);
     setCourseThumbnailPreview('');
@@ -142,6 +144,7 @@ const AdminDashboard = () => {
       googleDriveLink: course.googleDriveLink || '',
       level: course.level || '',
       modules: Array.isArray(course.modules) ? course.modules : [],
+      featured: !!course.featured,
     });
     setCourseThumbnailFile(null);
     setCourseThumbnailPreview(course.thumbnail || '');
@@ -150,8 +153,11 @@ const AdminDashboard = () => {
   };
 
   const handleCourseInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setCourseForm((prev) => {
+      if (name === 'featured') {
+        return { ...prev, featured: !!checked };
+      }
       if (name === 'type') {
         const nextType = value;
         // If course is free, force price to 0 for consistency
@@ -881,6 +887,19 @@ const AdminDashboard = () => {
                     className="w-full border border-gray-300 rounded-md px-2 py-1.5 text-sm"
                   />
                 </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  id="featured"
+                  type="checkbox"
+                  name="featured"
+                  checked={!!courseForm.featured}
+                  onChange={handleCourseInputChange}
+                  className="h-4 w-4 text-primary-600 border-gray-300 rounded"
+                />
+                <label htmlFor="featured" className="text-xs font-medium text-gray-700">
+                  Featured course (show in home page featured section)
+                </label>
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Modules</label>

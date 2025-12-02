@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Search, Filter, AlertCircle, RotateCw } from 'lucide-react'
 import CourseCard from '../components/CourseCard'
-import { fetchCourses } from '../api/courses'
+import { getCourses as fetchCourses } from '../api/courses'
 import { useAuth } from '../context/AuthContext.jsx'
 import { fetchMyEnrollments } from '../api/enroll'
 

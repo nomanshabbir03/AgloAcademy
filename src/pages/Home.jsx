@@ -6,6 +6,7 @@ import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import Slider from '../components/Slider';
 import CourseCard from '../components/CourseCard';
+import { useFeaturedCourses } from '../hooks/useCourses';
 
 // TikTok Icon Component
 const TikTok = ({ size = 24, className = '' }) => (
@@ -29,47 +30,8 @@ const Home = () => {
     { icon: TrendingUp, number: 95, suffix: '%', label: 'Success Rate' }
   ];
 
-  const featuredCourses = [
-    {
-      id: 1,
-      title: 'Introduction to Web Development',
-      description: 'Learn HTML, CSS, and JavaScript fundamentals',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-      instructor: 'John Doe',
-      price: 49.99,
-      rating: 4.5,
-      students: 1200,
-      category: 'Web Development',
-      duration: '8 weeks',
-      level: 'Beginner'
-    },
-    {
-      id: 2,
-      title: 'Advanced React Patterns',
-      description: 'Master advanced React patterns',
-      image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-      instructor: 'Jane Smith',
-      price: 59.99,
-      rating: 4.8,
-      students: 850,
-      category: 'Web Development',
-      duration: '6 weeks',
-      level: 'Advanced'
-    },
-    {
-      id: 3,
-      title: 'Node.js Backend Fundamentals',
-      description: 'Build scalable backend applications',
-      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-      instructor: 'Mike Johnson',
-      price: 54.99,
-      rating: 4.6,
-      students: 1100,
-      category: 'Backend Development',
-      duration: '10 weeks',
-      level: 'Intermediate'
-    }
-  ];
+  const { data: featuredCourses = [], isLoading: featuredLoading, isError: featuredError } =
+    useFeaturedCourses();
 
   const { ref: statsRef, inView: statsInView } = useInView({
     threshold: 0.3,
@@ -152,6 +114,55 @@ const Home = () => {
             <Link to="/courses" className="btn-primary">
               Join Now
             </Link>
+
+            {/* Social Media Icons - Mobile (under Join button) */}
+            <div className="mt-6 flex lg:hidden items-center justify-center space-x-5">
+              <a
+                href="https://www.facebook.com/share/1DbnEoGtjk/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
+                aria-label="Visit our Facebook page"
+              >
+                <Facebook size={24} />
+              </a>
+              <a
+                href="https://www.instagram.com/myagloacademy?igsh=MWZvZ3I4c3poZXc2Yg=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
+                aria-label="Visit our Instagram page"
+              >
+                <Instagram size={24} />
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
+                aria-label="Visit our YouTube channel"
+              >
+                <Youtube size={24} />
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
+                aria-label="Visit our LinkedIn page"
+              >
+                <Linkedin size={24} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@myagloacademy?_r=1&_t=ZS-91mXOOhYRQz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-primary-600 transition-colors duration-300 flex items-center justify-center"
+                aria-label="Visit our TikTok page"
+              >
+                <TikTok size={24} />
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -171,7 +182,7 @@ const Home = () => {
             <p className="text-lg text-gray-600">Numbers that speak for our commitment</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -218,11 +229,27 @@ const Home = () => {
             <p className="text-lg text-gray-600">Discover our most popular courses</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
+          {featuredError ? (
+            <p className="text-center text-red-500 text-sm">
+              Failed to load featured courses. Please try again later.
+            </p>
+          ) : featuredLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="card h-64 bg-gray-100 animate-pulse" />
+              ))}
+            </div>
+          ) : featuredCourses.length === 0 ? (
+            <p className="text-center text-gray-500 text-sm">
+              No featured courses yet. Mark a course as featured from the admin dashboard.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredCourses.map((course) => (
+                <CourseCard key={course._id || course.id} course={course} />
+              ))}
+            </div>
+          )}
 
           <motion.div
             className="text-center mt-12"

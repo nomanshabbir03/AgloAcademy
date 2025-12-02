@@ -15,14 +15,20 @@ const mapCourse = (course) => {
   };
 };
 
-export const fetchCourses = async () => {
-  const response = await apiClient.get('/courses');
-  return response.data.map(mapCourse);
+export const getCourses = async (filters = {}) => {
+  const params = { ...filters };
+  const response = await apiClient.get('/courses', { params });
+  return Array.isArray(response.data) ? response.data.map(mapCourse) : [];
 };
 
-export const fetchCourseById = async (id) => {
+export const getCourse = async (id) => {
   const response = await apiClient.get(`/courses/${id}`);
   return mapCourse(response.data);
+};
+
+export const getFeaturedCourses = async () => {
+  const response = await apiClient.get('/courses', { params: { featured: true } });
+  return Array.isArray(response.data) ? response.data.map(mapCourse) : [];
 };
 
 export const enrollInCourseRequest = async (courseId, payload) => {

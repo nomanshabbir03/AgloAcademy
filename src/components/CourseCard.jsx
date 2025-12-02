@@ -4,7 +4,7 @@ import LazyImage from './LazyImage';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-const CourseCard = ({ course, isEnrolled = false, isPending = false }) => {
+const CourseCard = ({ course }) => {
   const [randomStudents, setRandomStudents] = useState(0);
   const [randomRating, setRandomRating] = useState(0);
 
@@ -43,7 +43,8 @@ const CourseCard = ({ course, isEnrolled = false, isPending = false }) => {
       viewport={{ once: true }}
       whileHover={{ scale: 1.02 }}
     >
-      <div className="relative h-48 overflow-hidden">
+      {/* IMAGE */}
+      <div className="relative h-36 md:h-40 overflow-hidden">
         <LazyImage
           src={course.image || 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&h=400&fit=crop'}
           alt={course.title}
@@ -60,40 +61,18 @@ const CourseCard = ({ course, isEnrolled = false, isPending = false }) => {
             </span>
           </div>
         )}
-
-        {(isEnrolled || isPending) && (
-          <div className="absolute top-3 left-3">
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${{
-                enrolled: 'bg-green-100 text-green-800',
-                pending: 'bg-yellow-100 text-yellow-800',
-              }[isEnrolled ? 'enrolled' : 'pending']}`}
-            >
-              {isEnrolled ? 'Enrolled' : 'Pending approval'}
-            </span>
-          </div>
-        )}
-
-        {!isEnrolled && !isPending && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 rounded-lg">
-            <Lock className="w-8 h-8 text-amber-600 mb-2" />
-            <p className="text-sm text-amber-700">
-              You can watch Course Content after your enrollment is approved by admin
-            </p>
-          </div>
-        )}
       </div>
 
-      <div className="p-6 flex flex-col h-full">
+      {/* COURSE INFO */}
+      <div className="p-3.5 md:p-4 flex flex-col h-full">
+        {/* Stars & Students */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center">
-            <div className="flex items-center">
-              {renderStars(course.averageRating || randomRating)}
-              <span className="ml-1 text-sm font-medium text-gray-600">
-                {course.averageRating?.toFixed(1) || randomRating.toFixed(1)}
-                <span className="text-gray-400 text-xs ml-1">({Math.floor(randomRating * 20) + 10})</span>
-              </span>
-            </div>
+            {renderStars(course.averageRating || randomRating)}
+            <span className="ml-1 text-sm font-medium text-gray-600">
+              {course.averageRating?.toFixed(1) || randomRating.toFixed(1)}
+              <span className="text-gray-400 text-xs ml-1">({Math.floor(randomRating * 20) + 10})</span>
+            </span>
           </div>
           <div className="text-sm text-gray-500 flex items-center">
             <Users size={16} className="mr-1" />
@@ -101,15 +80,18 @@ const CourseCard = ({ course, isEnrolled = false, isPending = false }) => {
           </div>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 hover:text-primary-600 transition-colors">
+        {/* Title */}
+        <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
           <Link to={`/courses/${course._id || course.id}`}>{course.title}</Link>
         </h3>
 
-        <p className="text-gray-600 mb-4 line-clamp-2 min-h-[3.25rem]">
+        {/* Description */}
+        <p className="text-gray-600 mb-3 line-clamp-2 min-h-[3rem]">
           {course.description || 'No description available'}
         </p>
 
-        <div className="space-y-2 mb-4">
+        {/* Details */}
+        <div className="space-y-1.5 mb-3">
           <div className="flex items-center text-sm text-gray-500">
             <Clock size={16} className="mr-2 flex-shrink-0" />
             <span>{course.duration || 'Self-paced'}</span>
@@ -128,6 +110,7 @@ const CourseCard = ({ course, isEnrolled = false, isPending = false }) => {
           </div>
         </div>
 
+        {/* View Details Button */}
         <Link to={`/courses/${course._id || course.id}`} className="block w-full mt-auto">
           <motion.div
             className="w-full btn-primary flex items-center justify-center space-x-2"
