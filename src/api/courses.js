@@ -9,9 +9,10 @@ const mapCourse = (course) => {
     averageRating: typeof course.rating === 'number' ? course.rating : course.averageRating,
     students: course.students || [],
     level: course.level || 'All Levels',
-    instructor: typeof course.instructor === 'string'
-      ? { name: course.instructor }
-      : course.instructor,
+    instructor:
+      typeof course.instructor === 'string'
+        ? { name: course.instructor }
+        : course.instructor,
   };
 };
 
@@ -25,6 +26,21 @@ export const getCourse = async (id) => {
   const response = await apiClient.get(`/courses/${id}`);
   return mapCourse(response.data);
 };
+
+/** 
+ * ✅ NEW — Required by Vercel build
+ * Some file is importing fetchCourseById
+ */
+export const fetchCourseById = async (id) => {
+  const response = await apiClient.get(`/courses/${id}`);
+  return mapCourse(response.data);
+};
+
+/** 
+ * Also export as getCourseById 
+ * (sometimes devs use slightly different names)
+ */
+export const getCourseById = fetchCourseById;
 
 export const getFeaturedCourses = async () => {
   const response = await apiClient.get('/courses', { params: { featured: true } });
