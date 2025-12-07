@@ -52,6 +52,32 @@ export const createEnrollmentRequest = async (req, res) => {
   }
 };
 
+export const rejectEnrollment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const enrollment = await Enrollment.findById(id).populate('user').populate('course');
+    if (!enrollment) {
+      return res.status(404).json({ message: 'Enrollment not found' });
+    }
+
+    if (enrollment.status === 'approved') {
+      return res.status(409).json({ message: 'Approved enrollments cannot be rejected' });
+    }
+
+    enrollment.status = 'rejected';
+    await enrollment.save();
+
+    return res.status(200).json({
+      message: 'Enrollment request rejected and removed from pending list',
+      enrollment,
+    });
+  } catch (error) {
+    console.error('Reject enrollment error:', error.message);
+    return res.status(500).json({ message: 'Failed to reject enrollment' });
+  }
+};
+
 export const approveEnrollment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -131,7 +157,7 @@ export const getEnrollmentStatus = async (req, res) => {
       course: courseId,
     }).select('status');
 
-    if (!enrollment) {
+    if (!enrollment || enrollment.status === 'rejected') {
       return res.status(200).json({ status: 'none' });
     }
 

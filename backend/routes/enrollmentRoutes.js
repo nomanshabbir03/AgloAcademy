@@ -5,6 +5,7 @@ import { protect, roleMiddleware } from '../middleware/authMiddleware.js';
 import {
   createEnrollmentRequest,
   approveEnrollment,
+  rejectEnrollment,
   getEnrollments,
   getEnrollmentStatus,
   getMyEnrollments,
@@ -35,6 +36,9 @@ router.post(
 
 // Admin approves an enrollment
 router.patch('/:id/approve', protect, roleMiddleware('admin'), approveEnrollment);
+
+// Admin rejects an enrollment
+router.patch('/:id/reject', protect, roleMiddleware('admin'), rejectEnrollment);
 
 // Admin can list all enrollments
 router.get('/', protect, roleMiddleware('admin'), getEnrollments);

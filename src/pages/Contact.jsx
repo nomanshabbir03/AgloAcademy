@@ -68,7 +68,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      details: 'myagloacademy@gmail.com'
+      details: 'tgdplanet@gmail.com'
     }
   ]
 

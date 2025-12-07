@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Target, Eye, Users, Award, BookOpen, Globe } from 'lucide-react'
 import LazyImage from '../components/LazyImage'
-import InstructorHero1 from '../assets/images/instructor-hero-1.jpg'
+import InstructorHero1 from '../assets/images/instructor-hero-3.png'
 import InstructorHero2 from '../assets/images/instructor-hero-2.jpg'
 
 const About = () => {
@@ -57,7 +57,7 @@ const About = () => {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About Aglo Academy
+              About TGD Planet
             </h1>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">
               Empowering the next generation with cutting-edge skills and knowledge 
@@ -126,7 +126,7 @@ const About = () => {
               Our Values
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              The principles that guide everything we do at Aglo Academy
+              The principles that guide everything we do at TGD Planet
             </p>
           </motion.div>
 
@@ -177,7 +177,7 @@ const About = () => {
               viewport={{ once: true }}
             >
               <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                Founded in 2020, Aglo Academy emerged from a simple yet powerful 
+                Founded in 2020, TGD Planet emerged from a simple yet powerful 
                 observation: the gap between traditional education and the rapidly evolving 
                 demands of the modern workplace was growing wider every day.
               </p>

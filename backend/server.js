@@ -12,6 +12,9 @@ import courseRoutes from './routes/courseRoutes.js';
 import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -60,6 +63,9 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/enroll', enrollmentRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/gallery', galleryRoutes);
+app.use('/api/testimonials', testimonialRoutes);
+app.use('/api/services', serviceRoutes);
 
 // Root route - API info
 app.get('/', (req, res) => {
@@ -73,7 +79,8 @@ app.get('/', (req, res) => {
       auth: '/api/auth',
       blog: '/api/blog',
       enroll: '/api/enroll',
-      contact: '/api/contact'
+      contact: '/api/contact',
+      testimonials: '/api/testimonials',
     }
   });
 });

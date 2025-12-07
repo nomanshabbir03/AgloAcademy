@@ -40,7 +40,7 @@ export const sendInquiry = async (req, res) => {
     }
 
     // Get admin email from environment or use default
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.CONTACT_EMAIL || 'info@agloacademy.com';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.CONTACT_EMAIL || 'tgdplanet@gmail.com';
     const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
 
     // Get Resend instance
@@ -48,7 +48,7 @@ export const sendInquiry = async (req, res) => {
 
     // Send email to admin
     const { data, error } = await resendInstance.emails.send({
-      from: `Aglo Academy <${fromEmail}>`,
+      from: `TGD Planet <${fromEmail}>`,
       to: [adminEmail],
       replyTo: email,
       subject: `New Inquiry: ${subject}`,
@@ -155,7 +155,7 @@ Message:
 ${message}
 
 ---
-This email was sent from the Aglo Academy contact form.
+This email was sent from the TGD Planet contact form.
 You can reply directly to this email to respond to ${name}.
       `
     });
@@ -173,7 +173,7 @@ You can reply directly to this email to respond to ${name}.
       await resendInstance.emails.send({
         from: `Aglo Academy <${fromEmail}>`,
         to: [email],
-        subject: 'Thank you for contacting Aglo Academy',
+        subject: 'Thank you for contacting TGD Planet',
         html: `
           <!DOCTYPE html>
           <html>
@@ -216,12 +216,12 @@ You can reply directly to this email to respond to ${name}.
               </div>
               <div class="content">
                 <p>Dear ${name},</p>
-                <p>Thank you for reaching out to Aglo Academy. We have received your inquiry regarding:</p>
+                <p>Thank you for reaching out to TGD Planet. We have received your inquiry regarding:</p>
                 <p><strong>${subject}</strong></p>
                 <p>Our team will review your message and get back to you as soon as possible, typically within 24-48 hours.</p>
                 <p>If you have any urgent questions, please feel free to contact us directly.</p>
                 <div class="footer">
-                  <p>Best regards,<br>The Aglo Academy Team</p>
+                  <p>Best regards,<br>The TGD Planet Team</p>
                 </div>
               </div>
             </body>

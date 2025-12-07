@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import CustomCursor from './components/CustomCursor';
+import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import LoadingSpinner from './components/LoadingSpinner';
 import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
@@ -14,14 +14,17 @@ const Home = lazy(() => import('./pages/Home'));
 const Courses = lazy(() => import('./pages/Courses'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail'));
+const Gallery = lazy(() => import('./pages/Gallery'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
+const DigitalServices = lazy(() => import('./pages/DigitalServices'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const Profile = lazy(() => import('./pages/Profile'));
 const CourseDetails = lazy(() => import('./pages/CourseDetails'));
 const PaymentInstructions = lazy(() => import('./pages/PaymentInstructions'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminGallery = lazy(() => import('./pages/AdminGallery'));
 const MyLearning = lazy(() => import('./pages/MyLearning'));
 
 // Create a client
@@ -146,7 +149,6 @@ function AppContent({ onAppReady }) {
   return (
     <div className="min-h-screen bg-primary-muted/5 flex flex-col">
       <ScrollToTop />
-      <CustomCursor />
       <Navbar />
       <main className="flex-grow pt-16">
         <ErrorBoundary>
@@ -172,7 +174,9 @@ function AppContent({ onAppReady }) {
               />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogDetail />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/about" element={<About />} />
+              <Route path="/digital-services" element={<DigitalServices />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Signup />} />
@@ -200,12 +204,21 @@ function AppContent({ onAppReady }) {
                   </AdminRoute>
                 }
               />
+              <Route
+                path="/admin/gallery"
+                element={
+                  <AdminRoute>
+                    <AdminGallery />
+                  </AdminRoute>
+                }
+              />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
       </main>
       <Footer />
+      <FloatingWhatsAppButton />
     </div>
   );
 }

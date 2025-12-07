@@ -106,10 +106,10 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-              Welcome to Aglo Academy
+              Welcome to TGD Planet
             </h2>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              We provide world-class education and training prepared by industry experts.
+              We provide world-class education and training prepared by industry experts
             </p>
             <Link to="/courses" className="btn-primary">
               Join Now
@@ -231,7 +231,7 @@ const Home = () => {
 
           {featuredError ? (
             <p className="text-center text-red-500 text-sm">
-              Failed to load featured courses. Please try again later.
+              Failed to load featured courses. Please try again later
             </p>
           ) : featuredLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -241,7 +241,7 @@ const Home = () => {
             </div>
           ) : featuredCourses.length === 0 ? (
             <p className="text-center text-gray-500 text-sm">
-              No featured courses yet. Mark a course as featured from the admin dashboard.
+              No featured courses yet. Visit Courses Section to explore further courses.
             </p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

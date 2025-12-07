@@ -31,7 +31,7 @@ const Footer = () => {
           >
             <div className="flex items-center space-x-2 mb-4">
               <GraduationCap className="h-8 w-8 text-primary-accent" />
-              <span className="text-xl font-heading font-bold">Aglo Academy</span>
+              <span className="text-xl font-heading font-bold">TGD Planet</span>
             </div>
             <p className="text-primary-secondary mb-4 font-body">
               Empowering the next generation with cutting-edge skills and knowledge 
@@ -109,12 +109,12 @@ const Footer = () => {
           >
             <h3 className="text-lg font-heading font-semibold mb-4">Our Courses</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Artificial Intelligence (AI)</a></li>
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Digital Marketing</a></li>
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Graphic Designing</a></li>
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Video Editing</a></li>
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Personal Grooming</a></li>
-              <li><a href="#" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Neurosmetic</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Artificial Intelligence (AI)</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Digital Marketing</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Graphic Designing</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Video Editing</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Personal Grooming</a></li>
+              <li><a href="/courses" className="text-primary-secondary hover:text-primary-accent transition-colors font-body">Neurosmetic</a></li>
             </ul>
           </motion.div>
 
@@ -141,7 +141,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-primary-accent" />
-                <span className="text-primary-secondary font-body">myagloacademy@gmail.com</span>
+                <span className="text-primary-secondary font-body">tgdplanet@gmail.com</span>
               </div>
             </div>
           </motion.div>
@@ -156,7 +156,7 @@ const Footer = () => {
           viewport={{ once: true }}
         >
           <p className="text-primary-secondary font-body">
-            © {currentYear} Aglo Academy. All rights reserved.
+            © {currentYear} TGD Planet. All rights reserved
           </p>
         </motion.div>
       </div>

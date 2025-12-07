@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import LazyImage from './LazyImage';
 
 // Import local instructor images (same pattern as About page)
-import InstructorHero1 from '../assets/images/instructor-hero-1.jpg';
+import InstructorHero1 from '../assets/images/instructor-hero-3.png';
 import InstructorHero2 from '../assets/images/instructor-hero-2.jpg';
 
 const Slider = () => {
@@ -14,27 +14,55 @@ const Slider = () => {
   const slides = [
     {
       id: 1,
-      title: "Expert-Led Learning",
-      subtitle: "Learn from experienced professionals",
-      description: "Join our comprehensive courses designed to provide you with practical skills and real-world knowledge to excel in your career.",
+      title: "Building Tomorrow's Leaders",
+      // subtitle: "Welcome to TGD Planet Academy",
+      description: "Founded with a passion for empowering youth, CEO Sheikh Ishtiaq established TGD Planet to provide world-class digital education accessible to everyone. We believe every student deserves the tools and knowledge to succeed in our rapidly evolving digital world.",
       backgroundImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&h=1080&fit=crop",
       instructorImage: InstructorHero1,
       instructorName: "Sheikh Ishtiaq",
-      instructorTitle: "Growth Strategist",
-      buttonText: "View Courses",
-      buttonLink: "/courses"
+      instructorTitle: "CEO",
+      buttonText: "Explore Us",
+      buttonLink: "/about"
     },
     {
       id: 2,
-      title: "Master Digital Skills",
-      subtitle: "From industry experts",
-      description: "Gain hands-on experience with the latest tools and technologies in digital design and technology.",
+      title: "Empowering Your Learning Journey",
+      // subtitle: "With COO [Name] at the Helm",
+      description: "Our Chief Operating Officer is dedicated to creating an environment where students thrive. Through streamlined processes, exceptional instructor support, and continuous innovation.",
       backgroundImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920&h=1080&fit=crop",
       instructorImage: InstructorHero2,
       instructorName: "Hafiz Abdul Manan",
-      instructorTitle: "Designer & Marketer",
+      instructorTitle: "COO",
+      buttonText: "About Us",
+      buttonLink: "/about"
+    },
+    {
+      id: 3,
+      title: "Ready to Level Up Your Skills?",
+      // subtitle: "Explore Cutting-Edge Courses Today",
+      description: "Dive into our world-class programs tailored for the digital age. Whether you're a beginner or looking to advance your expertise, we have the perfect course waiting for you. Start your transformation now!",
+      backgroundImage: "https://images.unsplash.com/photo-1570286424573-5795ac9db869?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGlnaXRhbCUyMGNsYXNzcm9vbXxlbnwwfHwwfHx8MA%3D%3D",
+      instructorImage: "https://cdn.pixabay.com/photo/2020/09/29/12/55/laptop-5612757_1280.jpg",
+      // instructorName: "Hafiz Abdul Manan",
+      // instructorTitle: "COO",
       buttonText: "Explore Programs",
       buttonLink: "/courses"
+    },
+    {
+      id: 4,
+      title: "Confused About Your Future?",
+      description:
+        "If you're unsure which path to choose or what skills to learn, book a 1:1 consultation with our expert mentors and get a personalized learning roadmap.",
+      backgroundImage:
+        "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1920&h=1080&fit=crop",
+      instructorImage:
+        "https://cdn.pixabay.com/photo/2016/03/31/09/22/consulting-1292328_1280.jpg",
+      instructorName: "Career Guidance Team",
+      instructorTitle: "Consultancy Experts",
+      buttonText: "Book Consultation",
+      buttonLink:
+        'https://wa.me/923061380308?text=' +
+        encodeURIComponent("Hi, I'm confused about my future and would like to book a consultation.")
     }
   ]
 

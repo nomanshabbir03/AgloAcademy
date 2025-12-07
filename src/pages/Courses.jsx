@@ -5,6 +5,7 @@ import CourseCard from '../components/CourseCard'
 import { getCourses as fetchCourses } from '../api/courses'
 import { useAuth } from '../context/AuthContext.jsx'
 import { fetchMyEnrollments } from '../api/enroll'
+import Testimonials from '../components/Testimonials.jsx'
 
 const Courses = () => {
   const { user } = useAuth()
@@ -289,6 +290,10 @@ const Courses = () => {
           </AnimatePresence>
         </div>
       </section>
+      <Testimonials />
+
+{/* Call to Action */}
+<section className="py-16 bg-primary-50"></section>
 
       {/* Call to Action */}
       <section className="py-16 bg-primary-50">
@@ -301,10 +306,10 @@ const Courses = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Can't Find What You're Looking For?
+              Book your consultation session with us.
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              Contact us to discuss custom training solutions for your organization
+              If you are confused about which course to take, or if you need help with your training, book a consultation session with us.
             </p>
             <motion.a
               href="/contact"

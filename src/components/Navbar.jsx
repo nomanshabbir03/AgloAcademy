@@ -29,8 +29,10 @@ const Navbar = () => {
         { name: 'Video Editing', path: '/courses/video-editing' }
       ]
     },
+    { name: 'Gallery', path: '/gallery' },
     { name: 'Blog', path: '/blog' },
     { name: 'About', path: '/about' },
+    { name: 'Digital Services', path: '/digital-services' },
     { name: 'Contact', path: '/contact' }
   ];
 
@@ -131,7 +133,7 @@ const Navbar = () => {
           <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
             <GraduationCap className="h-8 w-8 text-primary-accent" />
             <span className="text-2xl font-heading font-bold text-gray-900">
-              Aglo Academy
+              TGD Planet
             </span>
           </Link>
 
