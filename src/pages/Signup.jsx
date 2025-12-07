@@ -101,7 +101,7 @@ const Signup = () => {
           <div className="auth-card-header">
             <h2 className="auth-card-title">Create your account</h2>
             <p className="auth-card-subtitle">
-              Join Aglo Academy and start learning today.
+              Join TGD Planet and start learning today.
               <br />
               Already have an account?{' '}
               <Link to="/login">Sign in</Link>

@@ -64,7 +64,7 @@ const PaymentInstructions = () => {
           <div className="mb-8 border border-gray-100 rounded-lg p-4 bg-gray-50">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Bank Account Details</h2>
             <ul className="text-sm text-gray-700 space-y-1">
-              <li><span className="font-medium">Account Name:</span> Aglo Academy</li>
+              <li><span className="font-medium">Account Name:</span> TGD Planet</li>
               <li><span className="font-medium">Bank Name:</span> Your Bank Name</li>
               <li><span className="font-medium">Account Number:</span> 1234 5678 9012</li>
               <li><span className="font-medium">IBAN:</span> PK00XXXX0000000000000000</li>

@@ -55,7 +55,7 @@ const Login = () => {
           <div className="auth-card-header">
             <h2 className="auth-card-title">Welcome back</h2>
             <p className="auth-card-subtitle">
-              Sign in to continue your journey at Aglo Academy.
+              Sign in to continue your journey at TGD Planet.
               <br />
               Or{' '}
               <Link to="/register">

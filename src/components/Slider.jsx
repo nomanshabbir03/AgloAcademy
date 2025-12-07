@@ -20,7 +20,7 @@ const Slider = () => {
       backgroundImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&h=1080&fit=crop",
       instructorImage: InstructorHero1,
       instructorName: "Sheikh Ishtiaq",
-      instructorTitle: "CEO",
+      instructorTitle: "Chief Executive Officer",
       buttonText: "Explore Us",
       buttonLink: "/about"
     },
@@ -32,7 +32,7 @@ const Slider = () => {
       backgroundImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920&h=1080&fit=crop",
       instructorImage: InstructorHero2,
       instructorName: "Hafiz Abdul Manan",
-      instructorTitle: "COO",
+      instructorTitle: "Chief Operational Officer",
       buttonText: "About Us",
       buttonLink: "/about"
     },

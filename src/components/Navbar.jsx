@@ -298,7 +298,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-white/10">
           <Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
             <GraduationCap className="h-8 w-8 text-primary-accent" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">Aglo Academy</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">TGD Planet</span>
           </Link>
           <button onClick={closeMenu} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
             <X size={24} />

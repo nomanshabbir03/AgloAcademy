@@ -137,7 +137,7 @@ export const sendInquiry = async (req, res) => {
               </div>
               
               <div class="footer">
-                <p>This email was sent from the Aglo Academy contact form.</p>
+                <p>This email was sent from the TGD Planet contact form.</p>
                 <p>You can reply directly to this email to respond to ${name}.</p>
               </div>
             </div>
@@ -171,7 +171,7 @@ You can reply directly to this email to respond to ${name}.
     // Optionally send confirmation email to the user
     if (process.env.SEND_CONFIRMATION_EMAIL === 'true') {
       await resendInstance.emails.send({
-        from: `Aglo Academy <${fromEmail}>`,
+        from: `TGD Planet <${fromEmail}>`,
         to: [email],
         subject: 'Thank you for contacting TGD Planet',
         html: `
