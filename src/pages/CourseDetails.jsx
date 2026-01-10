@@ -2,8 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, ExternalLink, RotateCw } from 'lucide-react';
-import { fetchCourseById } from '../api/courses';
-import { getEnrollmentStatusRequest } from '../api/enroll';
+import apiClient from '../utils/apiClients'; // ✅ use new apiClient
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 
@@ -21,22 +20,24 @@ const CourseDetails = () => {
 
   const isPaid = useMemo(() => course && course.type === 'paid', [course]);
 
+  // ✅ Load course details
   useEffect(() => {
     const loadCourse = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        const data = await fetchCourseById(id);
+        const { data } = await apiClients.get(`/courses/${id}`); // automatically /api/courses/:id
         setCourse(data);
 
+        // ✅ Check enrollment status if paid
         if (user && data?.type === 'paid') {
           try {
-            const statusResponse = await getEnrollmentStatusRequest(data._id || data.id);
-
-            if (statusResponse?.status === 'approved') {
+            const { data: statusData } = await apiClients.get(`/enroll/status/${data._id || data.id}`);
+            if (statusData?.status === 'approved') {
               setIsApproved(true);
               setHasPendingEnrollment(false);
-            } else if (statusResponse?.status === 'pending') {
+            } else if (statusData?.status === 'pending') {
               setHasPendingEnrollment(true);
               setIsApproved(false);
             }
@@ -44,6 +45,7 @@ const CourseDetails = () => {
             console.error('Failed to load enrollment status:', statusErr);
           }
         }
+
       } catch (err) {
         console.error('Failed to load course details:', err);
         const status = err?.response?.status;
@@ -112,9 +114,7 @@ const CourseDetails = () => {
                 {course.type === 'paid' ? 'Paid Program' : 'Free Program'}
               </p>
               <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">{course.title}</h1>
-              <p className="text-sm md:text-base text-primary-100/90 mb-4 md:mb-6">
-                {course.description}
-              </p>
+              <p className="text-sm md:text-base text-primary-100/90 mb-4 md:mb-6">{course.description}</p>
             </div>
 
             <div className="w-full md:w-80">
@@ -122,9 +122,7 @@ const CourseDetails = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs text-slate-500 mb-1">Access</p>
-                    <p className="text-sm font-semibold">
-                      {isPaid ? 'Full course (paid)' : 'Full course (free)'}
-                    </p>
+                    <p className="text-sm font-semibold">{isPaid ? 'Full course (paid)' : 'Full course (free)'}</p>
                   </div>
                   {isPaid && !isApproved && (
                     <div className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
@@ -181,9 +179,7 @@ const CourseDetails = () => {
                   {course.modules.map((mod, index) => (
                     <li key={index} className="relative flex gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
                       <div className="mt-1">
-                        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-xs font-bold">
-                          {index + 1}
-                        </div>
+                        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-xs font-bold">{index + 1}</div>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-slate-900 mb-1">{mod.title || `Module ${index + 1}`}</p>
@@ -206,9 +202,7 @@ const CourseDetails = () => {
                     Open course materials
                   </a>
                 ) : (
-                  <p className="text-xs md:text-sm text-slate-600">
-                    Course materials will be available soon.
-                  </p>
+                  <p className="text-xs md:text-sm text-slate-600">Course materials will be available soon.</p>
                 )}
               </motion.div>
             ) : (

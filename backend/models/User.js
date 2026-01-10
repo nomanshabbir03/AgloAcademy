@@ -6,38 +6,46 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: true,
+      trim: true
     },
     password: {
       type: String,
       required: true,
-      minlength: 6,
+      minlength: 6
     },
     role: {
       type: String,
       enum: ['student', 'instructor', 'admin'],
-      default: 'student',
+      default: 'student'
     },
-    enrolledCourses: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
-      },
-    ],
+    firebaseUid: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false
+    },
+    enrolledCourses: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course'
+    }]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
-userSchema.pre('save', async function (next) {
+// Hash password before saving
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
   }
@@ -46,10 +54,15 @@ userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
+
+// Method to compare passwords
+userSchema.methods.matchPassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 const User = mongoose.model('User', userSchema);
 

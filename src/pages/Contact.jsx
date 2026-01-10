@@ -58,12 +58,12 @@ const Contact = () => {
     {
       icon: MapPin,
       title: 'Address',
-      details: '45 A, E11 Islamabad Pakistan'
+      details: 'E11 Islamabad Pakistan'
     },
     {
       icon: Phone,
       title: 'Phone',
-      details: '+92 3365116800\n+92 3061380308'
+      details: '+923365116800\n+923061380308'
     },
     {
       icon: Mail,

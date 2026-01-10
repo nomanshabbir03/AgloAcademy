@@ -1,7 +1,10 @@
+// src/pages/Register.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
+import OTPVerification from '../components/OTPVerification';
+import api from '../utils/api';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,8 @@ const Register = () => {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [step, setStep] = useState(1); // 1: Registration form, 2: OTP verification
+  const [otpId, setOtpId] = useState('');
   const { register } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -49,27 +54,53 @@ const Register = () => {
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validate()) {
-      showToast('Please fix the form errors', 'error');
-      return;
-    }
+    if (!validate()) return;
     
     setLoading(true);
-    
     try {
+      // First, send OTP to the user's email
+      const response = await api.post('/auth/send-otp', { 
+        email: formData.email,
+        purpose: 'email-verification'
+      });
+      
+      setOtpId(response.data.otpId);
+      setStep(2); // Move to OTP verification step
+    } catch (error) {
+      showToast(error.response?.data?.message || 'Failed to send OTP', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    try {
+      const response = await api.post('/auth/send-otp', { 
+        email: formData.email,
+        purpose: 'email-verification'
+      });
+      setOtpId(response.data.otpId);
+      return Promise.resolve();
+    } catch (error) {
+      showToast(error.response?.data?.message || 'Failed to resend OTP', 'error');
+      return Promise.reject(error);
+    }
+  };
+
+  const handleVerifyOTP = async (otp) => {
+    try {
+      // First verify the OTP
+      await api.post('/auth/verify-email', { 
+        email: formData.email, 
+        otp,
+        otpId
+      });
+      
+      // If OTP is valid, proceed with registration
       const result = await register({
         name: formData.name,
         email: formData.email,
@@ -77,130 +108,139 @@ const Register = () => {
       });
       
       if (result.success) {
-        showToast('Registration successful! Please log in.', 'success');
-        navigate('/login');
+        showToast('Registration successful!', 'success');
+        navigate('/dashboard');
       } else {
-        showToast(result.message || 'Registration failed', 'error');
+        throw new Error(result.message || 'Registration failed');
       }
     } catch (error) {
-      showToast('An error occurred during registration', 'error');
-      console.error('Registration error:', error);
-    } finally {
-      setLoading(false);
+      throw new Error(error.response?.data?.message || 'Invalid OTP. Please try again.');
     }
   };
 
+  if (step === 1) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Create your account
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Or{' '}
+              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+                sign in to your existing account
+              </Link>
+            </p>
+          </div>
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <div className="rounded-md shadow-sm space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full px-3 py-2 border ${
+                    errors.name ? 'border-red-500' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  disabled={loading}
+                />
+                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full px-3 py-2 border ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  disabled={loading}
+                />
+                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full px-3 py-2 border ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  disabled={loading}
+                />
+                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full px-3 py-2 border ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  disabled={loading}
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Sending OTP...' : 'Sign up'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // OTP Verification Step
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create a new account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link 
-              to="/login" 
-              className="font-medium text-primary hover:text-primary-dark"
-            >
-              sign in to your existing account
-            </Link>
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="name" className="sr-only">
-                Full Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.name ? 'border-red-300' : 'border-gray-300'} placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.email ? 'border-red-300' : 'border-gray-300'} placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
-                placeholder="Email address"
-                value={formData.email}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'} placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
-                placeholder="Password (min 6 characters)"
-                value={formData.password}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="confirm-password" className="sr-only">
-                Confirm Password
-              </label>
-              <input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm`}
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              disabled={loading}
-            >
-              {loading ? 'Creating account...' : 'Create Account'}
-            </button>
-          </div>
-        </form>
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+        <OTPVerification
+          email={formData.email}
+          onVerify={handleVerifyOTP}
+          onResend={handleResendOTP}
+          purpose="verification"
+          onBack={() => setStep(1)}
+          loading={loading}
+        />
       </div>
     </div>
   );

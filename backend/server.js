@@ -1,103 +1,102 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
+import './config/config.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-import connectDB from './config/db.js';
-import authRoutes from './routes/authRoutes.js';
-import courseRoutes from './routes/courseRoutes.js';
-import enrollmentRoutes from './routes/enrollmentRoutes.js';
-import blogRoutes from './routes/blogRoutes.js';
-import contactRoutes from './routes/contactRoutes.js';
-import galleryRoutes from './routes/galleryRoutes.js';
-import testimonialRoutes from './routes/testimonialRoutes.js';
-import serviceRoutes from './routes/serviceRoutes.js';
-import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
-dotenv.config();
-
-const app = express();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const FRONTEND_URL = process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173';
-const LOG_LEVEL = process.env.LOG_LEVEL || 'dev';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import authRoutes from './routes/auth.js';
+import courseRoutes from './routes/courseRoutes.js';
+import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
-// Normalize FRONTEND_URL (remove trailing slash)
-const normalizedFrontendUrl = FRONTEND_URL.replace(/\/$/, '');
+console.log('Starting server with environment:', process.env.NODE_ENV || 'development');
 
-// CORS configuration - handle with/without trailing slash
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    // Normalize origin (remove trailing slash)
-    const normalizedOrigin = origin.replace(/\/$/, '');
-    
-    // Check if origin matches (with or without trailing slash)
-    if (normalizedOrigin === normalizedFrontendUrl || origin === FRONTEND_URL) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// Initialize Express
+const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan(LOG_LEVEL));
 
-// Static files for uploads (payment screenshots, etc.)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// ✅ CORS setup for frontend with credentials
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+app.use(cors({
+  origin: FRONTEND_URL,   // only allow your frontend
+  credentials: true,      // allow cookies and Authorization headers
+}));
 
-// API routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/enroll', enrollmentRoutes);
-app.use('/api/blog', blogRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/testimonials', testimonialRoutes);
-app.use('/api/services', serviceRoutes);
 
-// Root route - API info
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Academy Backend API',
-    version: '1.0.0',
-    status: 'running',
-    endpoints: {
-      health: '/api/health',
-      courses: '/api/courses',
-      auth: '/api/auth',
-      blog: '/api/blog',
-      enroll: '/api/enroll',
-      contact: '/api/contact',
-      testimonials: '/api/testimonials',
-    }
-  });
-});
-
-// Health check
-app.get('/api/health', (req, res) => {
+// Health check endpoint
+app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// Error handlers
+// Connect to MongoDB
+const connectDB = async () => {
+  const { MONGODB_URI } = await import('./config/config.js');
+
+  console.log('Connecting to MongoDB...');
+  console.log('MongoDB URI:', MONGODB_URI ? '***' : 'NOT SET');
+
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      socketTimeoutMS: 45000,          // Close sockets after 45s
+    });
+
+    mongoose.connection.on('connected', () => {
+      console.log('✅ MongoDB connected successfully');
+    });
+
+    mongoose.connection.on('error', (err) => {
+      console.error('❌ MongoDB connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      console.log('ℹ️  MongoDB disconnected');
+    });
+
+  } catch (error) {
+    console.error('❌ MongoDB connection failed:', error.message);
+    process.exit(1);
+  }
+};
+
+// Retry logic for MongoDB connection
+const MAX_RETRIES = 3;
+let retryCount = 0;
+
+const connectWithRetry = async () => {
+  try {
+    await connectDB();
+  } catch (error) {
+    retryCount++;
+    if (retryCount < MAX_RETRIES) {
+      console.log(`Retrying MongoDB connection (${retryCount}/${MAX_RETRIES})...`);
+      setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+    } else {
+      console.error('❌ Max retries reached. Could not connect to MongoDB');
+      process.exit(1);
+    }
+  }
+};
+
+connectWithRetry();
+
+// Error handling middleware (must come after all routes)
 app.use(notFound);
 app.use(errorHandler);
 
+// Start server
 const PORT = process.env.PORT || 5000;
-
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

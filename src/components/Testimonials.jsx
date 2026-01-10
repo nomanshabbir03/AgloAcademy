@@ -89,7 +89,7 @@ const Testimonials = () => {
             What Our Students Say
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Hear from our successful graduates who transformed their careers with TGD Planet Academy
+            Hear from our successful graduates who transformed their careers with <br/>TGD Planet Academy
           </p>
         </motion.div>
 

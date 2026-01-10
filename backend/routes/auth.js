@@ -1,37 +1,28 @@
+// backend/routes/auth.js
 import express from 'express';
-import { protect } from '../middleware/authMiddleware.js';
-import {
+const router = express.Router();
+
+import { 
   registerUser,
   loginUser,
   getCurrentUser,
+  checkEmailVerification,
+  resendVerificationEmail
 } from '../controllers/authController.js';
-import { updateProfile, updatePassword } from '../controllers/userController.js';
 
-const router = express.Router();
+import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
-// @route   POST /api/auth/register
-// @desc    Register a new user (student by default)
-// @access  Public
+// -----------------
+// Public routes
+// -----------------
 router.post('/register', registerUser);
-
-// @route   POST /api/auth/login
-// @desc    Login user and return JWT
-// @access  Public
 router.post('/login', loginUser);
 
-// @route   GET /api/auth/me
-// @desc    Get current logged-in user profile
-// @access  Private
+// -----------------
+// Protected routes
+// -----------------
 router.get('/me', protect, getCurrentUser);
-
-// @route   PATCH /api/auth/profile
-// @desc    Update current user's name/email
-// @access  Private
-router.patch('/profile', protect, updateProfile);
-
-// @route   PATCH /api/auth/password
-// @desc    Update current user's password
-// @access  Private
-router.patch('/password', protect, updatePassword);
+router.get('/check-verification', protect, checkEmailVerification);
+router.post('/resend-verification', protect, resendVerificationEmail);
 
 export default router;
