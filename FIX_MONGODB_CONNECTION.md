@@ -47,13 +47,13 @@ In Railway, check your `MONGO_URI` environment variable:
 
 **Correct format:**
 ```
-mongodb+srv://username:password@cluster-name.mongodb.net/academy_db?retryWrites=true&w=majority
+mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/<database-name>?retryWrites=true&w=majority
 ```
 
 **Common issues:**
 - ❌ Missing `mongodb+srv://` prefix
 - ❌ Wrong username/password
-- ❌ Missing database name (`academy_db`)
+- ❌ Missing database name
 - ❌ Special characters in password not URL-encoded
 
 **If your password has special characters**, URL-encode them:
@@ -83,12 +83,12 @@ mongodb+srv://username:password@cluster-name.mongodb.net/academy_db?retryWrites=
 3. Select **"Node.js"** and version **"5.5 or later"**
 4. Copy the connection string
 5. Replace `<password>` with your actual password
-6. Replace `<dbname>` with `academy_db`
+6. Replace `<dbname>` with your actual database name
 7. Use this exact string in Railway's `MONGO_URI` variable
 
 **Example:**
 ```
-mongodb+srv://myuser:mypassword123@cluster0.xxxxx.mongodb.net/academy_db?retryWrites=true&w=majority
+mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/<database-name>?retryWrites=true&w=majority
 ```
 
 ---
@@ -122,7 +122,7 @@ Test your connection string locally first:
 ```javascript
 import mongoose from 'mongoose';
 
-const MONGO_URI = 'your-connection-string-here';
+const MONGO_URI = '<your-connection-string-here>';
 
 mongoose.connect(MONGO_URI)
   .then(() => {
@@ -161,7 +161,7 @@ mongoose.connect(MONGO_URI)
 
 2. **Database Name**
    - Ensure database name in connection string matches
-   - Default: `academy_db`
+   - Default: `<database-name>`
 
 3. **Cluster Status**
    - Check if your MongoDB Atlas cluster is running
@@ -183,15 +183,13 @@ mongoose.connect(MONGO_URI)
 
 ### MongoDB Atlas:
 - Network Access: `0.0.0.0/0` (Allow from anywhere)
-- Database User: `admin` with password `SecurePass123!`
-- Database Name: `academy_db`
+- Database User: `<username>` with password `<password>`
+- Database Name: `<database-name>`
 
 ### Railway Environment Variable:
 ```
-MONGO_URI=mongodb+srv://admin:SecurePass123%21@cluster0.xxxxx.mongodb.net/academy_db?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/<database-name>?retryWrites=true&w=majority
 ```
-
-Note: `!` is encoded as `%21` in the password.
 
 ---
 
